@@ -1,6 +1,8 @@
 import pytest
 from playwright.sync_api import sync_playwright
 
+from resources.tabs import Tabs
+
 @pytest.fixture(scope="session")
 def browser():
     with sync_playwright() as p:
@@ -9,8 +11,17 @@ def browser():
         browser.close()
 
 @pytest.fixture
-def page(browser):
+def context(browser):
     context = browser.new_context()
+    yield context
+    context.close()
+
+@pytest.fixture
+def page(context):
     page = context.new_page()
     yield page
     context.close()
+
+@pytest.fixture
+def tabs(context):
+    return Tabs(context)
