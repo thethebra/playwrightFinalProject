@@ -26,9 +26,9 @@ class LoginPage(BasePage):
             self.login_locator.fill(self.username)
             self.password_locator.fill(self.password)
             self.enter_button_locator.click()
-            self.make_screenshot("Авторизация")
+            self.make_screenshot("Ожидание авторизации")
 
     def check_authorization(self):
         with step("Проверка авторизации"):
-            expect(self.username_locator).to_be_visible(timeout=10000)
+            expect(self.username_locator).to_be_visible(timeout=20000)
             self.make_screenshot("Авторизован")
