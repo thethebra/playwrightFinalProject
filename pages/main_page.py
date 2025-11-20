@@ -3,7 +3,6 @@ from playwright.sync_api import Page, expect
 from allure import step
 
 from pages.base_page import BasePage
-from resources.material_enum import Material
 
 
 class MainPage(BasePage):
