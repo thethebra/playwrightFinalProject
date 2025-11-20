@@ -27,13 +27,6 @@ jobs:
       - name: Install Playwright
         run: python -m playwright install --with-deps
 
-      - name: Install Allure CLI
-        run: |
-          wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.29.0/allure-commandline-2.29.0.zip -O allure.zip
-          unzip allure.zip -d allure-cli
-          sudo mv allure-cli/allure-2.29.0/bin/allure /usr/local/bin/allure
-          allure --version
-
       - name: Run Pytest
         run: pytest --clean-alluredir --alluredir=allure-results
 
@@ -44,8 +37,12 @@ jobs:
           name: allure-results
           path: allure-results
 
-      - name: Generate Allure report
-        run: allure generate allure-results -o allure-report --clean
+      - name: Allure Report
+        uses: simple-elf/allure-report-action@v1.7
+        with:
+          allure_results: allure-results
+          allure_report: allure-report
+          keep_history: false
 
       - name: Upload Allure Report HTML
         uses: actions/upload-artifact@v4
