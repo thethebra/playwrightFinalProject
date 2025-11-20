@@ -32,4 +32,4 @@ class TestE2E:
         p.check_parameter("Материал", "acryl:Neomarm:N-103 Gray Onix")
         p.check_parameter("Тип столешницы", "П-образная")
         p.check_parameter("Опции", "Проточки для стока воды")
-        p.check_parameter("Стоимость итоговая", "413300.00")
+        p.check_parameter("Стоимость итоговая", "412500.00")

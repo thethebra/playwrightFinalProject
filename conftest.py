@@ -1,12 +1,15 @@
 import pytest
+import os
 from playwright.sync_api import sync_playwright
 
 from resources.tabs import Tabs
 
+headless_mode = os.getenv("CI") == "true"
+
 @pytest.fixture(scope="session")
 def browser():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=headless_mode)
         yield browser
         browser.close()
 
