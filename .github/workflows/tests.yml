@@ -37,12 +37,12 @@ jobs:
           name: allure-results
           path: allure-results
 
-      - name: Allure Report
-        uses: simple-elf/allure-report-action@v1.7
-        with:
-          allure_results: allure-results
-          allure_report: allure-report
-          keep_history: false
+      - name: Generate Allure Report (Docker)
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}/allure-results:/allure-results \
+            -v ${{ github.workspace }}/allure-report:/allure-report \
+            frankescobar/allure-docker-service generate
 
       - name: Upload Allure Report HTML
         uses: actions/upload-artifact@v4
