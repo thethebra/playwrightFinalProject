@@ -38,6 +38,7 @@ jobs:
           path: allure-results
 
       - name: Generate Allure Report (Docker)
+        if: always()
         run: |
           docker run --rm \
             -v ${{ github.workspace }}/allure-results:/allure-results \
