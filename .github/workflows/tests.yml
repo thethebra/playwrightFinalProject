@@ -2,9 +2,9 @@ name: Run Playwright Tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   test:
@@ -37,13 +37,14 @@ jobs:
           name: allure-results
           path: allure-results
 
-      - name: Generate Allure Report (Docker)
+      - name: Generate Allure Report
         if: always()
         run: |
           docker run --rm \
-            -v ${{ github.workspace }}/allure-results:/allure-results \
-            -v ${{ github.workspace }}/allure-report:/allure-report \
-            allure generate /allure-results -o /allure-report --clean
+            -v ${{ github.workspace }}/allure-results:/app/allure-results \
+            -v ${{ github.workspace }}/allure-report:/app/allure-report \
+            ghcr.io/allure-framework/allure2:latest \
+            allure generate /app/allure-results -o /app/allure-report --clean
 
       - name: Upload Allure Report HTML
         uses: actions/upload-artifact@v4
