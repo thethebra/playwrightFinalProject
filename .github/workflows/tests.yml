@@ -1,6 +1,7 @@
 name: Run Playwright Tests
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main"]
   pull_request:
@@ -21,32 +22,26 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Install Playwright
         run: python -m playwright install --with-deps
 
-      - name: Install Java
-        run: sudo apt-get update && sudo apt-get install -y openjdk-17-jre
-
-      - name: Install Allure CLI
-        run: |
-          wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.35.0/allure-commandline-2.35.0.zip -O allure.zip
-          unzip allure.zip -d allure
-          sudo mv allure/allure-2.35.0 /opt/allure
-          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-
       - name: Run Pytest
         run: pytest --clean-alluredir --alluredir=allure-results
 
       - name: Generate Allure Report
-        if: always()
-        run: allure generate allure-results -o allure-report --clean
-
-      - name: Upload Allure HTML Report
-        uses: actions/upload-artifact@v4
+        uses: andgineer/allure-report@v3.6
         if: always()
         with:
-          name: allure-report
-          path: allure-report
+          allure-results: allure-results
+          website: gh-pages-dir
+          reports-site-path: builds/tests
+
+      - name: Deploy Allure Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: gh-pages-dir
