@@ -37,14 +37,14 @@ jobs:
           name: allure-results
           path: allure-results
 
-      - name: Generate Allure Report
+      - name: Generate Allure report
+        uses: andgineer/allure-report@v3.6
+        id: allure-report
         if: always()
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}/allure-results:/allure-results \
-            -v ${{ github.workspace }}/allure-report:/allure-report \
-            frankescobar/allure-docker-service-cli \
-            allure generate /allure-results -o /allure-report --clean
+        with:
+          allure-results: allure-results
+          website: gh-pages-dir
+          reports-site-path: builds/tests
 
       - name: Upload Allure Report HTML
         uses: actions/upload-artifact@v4
