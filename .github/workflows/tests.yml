@@ -35,5 +35,12 @@ jobs:
         if: always()
         with:
           allure-results: allure-results
+          website: gh-pages-dir
+          reports-site-path: builds/tests
+
+      - name: Deploy Allure Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          website: builds/tests
+          publish_dir: gh-pages-dir
