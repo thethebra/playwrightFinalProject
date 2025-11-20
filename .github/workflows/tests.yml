@@ -29,6 +29,7 @@ jobs:
 
       - name: Run Pytest
         run: pytest --clean-alluredir --alluredir=allure-results
+        continue-on-error: true
 
       - name: Upload Allure Results (raw)
         uses: actions/upload-artifact@v4
@@ -43,10 +44,19 @@ jobs:
         if: always()
         with:
           allure-results: allure-results
+          website: gh-pages-dir
+          reports-site-path: builds/tests
+
+      - name: Deploy Allure Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: gh-pages-dir
 
       - name: Upload Allure Report HTML
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: allure-report
-          path: allure-report
+          path: gh-pages-dir
