@@ -27,11 +27,11 @@ jobs:
       - name: Install Playwright
         run: python -m playwright install --with-deps
 
-      - name: Install Allure
+      - name: Install Allure CLI
         run: |
-          wget https://github.com/allure-framework/allure2/releases/latest/download/allure-commandline.zip -O allure.zip
+          wget https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.29.0/allure-commandline-2.29.0.zip -O allure.zip
           unzip allure.zip -d allure-cli
-          sudo mv allure-cli/bin/allure /usr/local/bin/allure
+          sudo mv allure-cli/allure-2.29.0/bin/allure /usr/local/bin/allure
           allure --version
 
       - name: Run Pytest
